@@ -17,19 +17,20 @@ import javax.swing.JOptionPane;
  */
 public class InterfazModificarJugador extends javax.swing.JFrame {
 
+    Equipo e;
     Jugador j;
     InterfazJugadores i;
 
     /**
      * Creates new form InterfazModificarJugador
      */
-    public InterfazModificarJugador(Jugador j, InterfazJugadores i) {
+    public InterfazModificarJugador(Equipo e,Jugador j, InterfazJugadores i) {
+        this.e=e;
         this.i = i;
         this.j = j;
         initComponents();
         getTextNombre().setText(i.getTextNombreJugador1().getText());
         getTextEdad().setText(i.getTextEdadJugador1().getText());
-        getTextEquipo().setText(i.getTextEquipoJugador1().getText());
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -67,12 +68,9 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         textNombre = new javax.swing.JTextField();
         textEdad = new javax.swing.JTextField();
         comboPosicion = new javax.swing.JComboBox<String>();
-        textEquipo = new javax.swing.JTextField();
-        botonElegir = new javax.swing.JButton();
         botonGuardar = new javax.swing.JButton();
         botonLimpiar = new javax.swing.JButton();
 
@@ -87,20 +85,7 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Posicion:");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setText("Equipo:");
-
         comboPosicion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Portero", "Defensa", "Medio", "Delantero" }));
-
-        textEquipo.setEditable(false);
-
-        botonElegir.setText("+");
-        botonElegir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botonElegir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonElegirActionPerformed(evt);
-            }
-        });
 
         botonGuardar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         botonGuardar.setText("Guardar");
@@ -137,22 +122,16 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
                                     .addComponent(textNombre)
                                     .addComponent(textEdad, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
+                                .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboPosicion, 0, 97, Short.MAX_VALUE)
-                                    .addComponent(textEquipo))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botonElegir)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(comboPosicion, 0, 97, Short.MAX_VALUE)))
+                        .addContainerGap(61, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGap(8, 8, 8)
                         .addComponent(botonLimpiar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,15 +149,10 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(comboPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(textEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonElegir))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(botonLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonLimpiar)
+                    .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -195,10 +169,6 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonElegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonElegirActionPerformed
-        InterfazElegir i = new InterfazElegir(this);
-    }//GEN-LAST:event_botonElegirActionPerformed
-
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         if (comprobarString(getTextNombre().getText())) {
             if (comprobarEntero(getTextEdad().getText())) {
@@ -207,22 +177,10 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
                 String nombre=getTextNombre().getText();
                 int edad = Integer.parseInt(getTextEdad().getText());
                 String posicion = getComboPosicion().getSelectedItem().toString();
-                if(j.getEquipo()!=null){
-                    j.getEquipo().getJugadores().remove(j);
-                }
-                Equipo e;
-                if (getTextEquipo().getText().contentEquals("")) {
-                    e=null;
-                    aux=new Jugador(id, nombre, edad, posicion);
-                    i.conexion.eliminarJugador(j);
-                    i.conexion.insertarJugador(aux);
-                } else {
-                    e = i.conexion.devolverEquipoPorNombre(getTextEquipo().getText());
-                    aux = new Jugador(id, nombre, edad, posicion, e);
-                    e.getJugadores().add(aux);
-                    i.conexion.eliminarJugador(j);
-                    i.conexion.insertarJugador(aux);
-                }
+                aux=new Jugador(id, nombre, edad, posicion);
+                i.conexion.modificarJugador(aux);
+                e.getJugadores().remove(j);
+                e.getJugadores().add(aux);
                 JOptionPane.showMessageDialog(this, "Jugador modificado", "Modificado", JOptionPane.INFORMATION_MESSAGE);
                 i.actualizarTabla();
                 i.actualizarTabla1();
@@ -237,23 +195,19 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
         getTextEdad().setText("");
-        getTextEquipo().setText("");
         getTextNombre().setText("");
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonElegir;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JButton botonLimpiar;
     private javax.swing.JComboBox<String> comboPosicion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField textEdad;
-    private javax.swing.JTextField textEquipo;
     private javax.swing.JTextField textNombre;
     // End of variables declaration//GEN-END:variables
 
@@ -271,12 +225,6 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
         return textEdad;
     }
 
-    /**
-     * @return the textEquipo
-     */
-    public javax.swing.JTextField getTextEquipo() {
-        return textEquipo;
-    }
 
     /**
      * @return the textNombre

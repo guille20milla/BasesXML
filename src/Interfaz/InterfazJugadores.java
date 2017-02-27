@@ -8,6 +8,10 @@ package Interfaz;
 import Objetos.Equipo;
 import Objetos.Jugador;
 import XML.XML;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -22,12 +26,14 @@ import javax.swing.table.DefaultTableModel;
 public class InterfazJugadores extends javax.swing.JFrame {
 
     XML conexion;
+    Equipo e;
 
     /**
      * Creates new form InterfazJugadores
      */
-    public InterfazJugadores(XML conexion) {
+    public InterfazJugadores(XML conexion, Equipo e) {
         this.conexion = conexion;
+        this.e = e;
         initComponents();
         actualizarTabla();
         actualizarTabla1();
@@ -37,33 +43,30 @@ public class InterfazJugadores extends javax.swing.JFrame {
 
     public void actualizarTabla() {
         DefaultTableModel modelo = null;
-        String[] titulos = {"Id_jugador", "Nombre", "Edad", "Posicion", "Equipo"};
+        String[] titulos = {"Id_jugador", "Nombre", "Edad", "Posicion"};
         modelo = new DefaultTableModel(null, titulos) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        Objects<Jugador> jugadores = conexion.getBd().getObjects(Jugador.class);
+        Set<Jugador> array = new TreeSet<Jugador>();
+        array = e.getJugadores();
+        Iterator<Jugador> jugadores = array.iterator();
         while (jugadores.hasNext()) {
             Jugador j = jugadores.next();
-            String[] fila = new String[5];
+            String[] fila = new String[4];
             fila[0] = String.valueOf(j.getId_jugador());
             fila[1] = j.getNombre();
             fila[2] = String.valueOf(j.getEdad());
             fila[3] = j.getPosicion();
-            if (j.getEquipo() == null) {
-                fila[4] = "No tiene equipo";
-            } else {
-                fila[4] = j.getEquipo().getNombre();
-            }
 
             modelo.addRow(fila);
 
         }
         getTablaJugadores().setModel(modelo);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
             tcr.setHorizontalAlignment(SwingConstants.CENTER);
             getTablaJugadores().getColumnModel().getColumn(i).setCellRenderer(tcr);
@@ -72,33 +75,30 @@ public class InterfazJugadores extends javax.swing.JFrame {
 
     public void actualizarTabla1() {
         DefaultTableModel modelo = null;
-        String[] titulos = {"Id_jugador", "Nombre", "Edad", "Posicion", "Equipo"};
+        String[] titulos = {"Id_jugador", "Nombre", "Edad", "Posicion"};
         modelo = new DefaultTableModel(null, titulos) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        Objects<Jugador> jugadores = conexion.getBd().getObjects(Jugador.class);
+        Set<Jugador> array = new TreeSet<Jugador>();
+        array = e.getJugadores();
+        Iterator<Jugador> jugadores = array.iterator();
         while (jugadores.hasNext()) {
             Jugador j = jugadores.next();
-            String[] fila = new String[5];
+            String[] fila = new String[4];
             fila[0] = String.valueOf(j.getId_jugador());
             fila[1] = j.getNombre();
             fila[2] = String.valueOf(j.getEdad());
             fila[3] = j.getPosicion();
-            if (j.getEquipo() == null) {
-                fila[4] = "No tiene equipo";
-            } else {
-                fila[4] = j.getEquipo().getNombre();
-            }
 
             modelo.addRow(fila);
 
         }
         getTablaJugadores1().setModel(modelo);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
             tcr.setHorizontalAlignment(SwingConstants.CENTER);
             getTablaJugadores().getColumnModel().getColumn(i).setCellRenderer(tcr);
@@ -143,17 +143,15 @@ public class InterfazJugadores extends javax.swing.JFrame {
             return false;
         }
     }
-    
-    public void limpiarPanelInsertar(){
+
+    public void limpiarPanelInsertar() {
         getTextEdadJugador().setText("");
-        getTextEquipoJugador().setText("");
         getTextIdJugador().setText("");
         getTextNombreJugador().setText("");
     }
-    
-    public void limpiarPanelModificar(){
+
+    public void limpiarPanelModificar() {
         getTextEdadJugador1().setText("");
-        getTextEquipoJugador1().setText("");
         getTextIdJugador1().setText("");
         getTextNombreJugador1().setText("");
         getTextPosicionJugador1().setText("");
@@ -194,8 +192,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaJugadores1 = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        textEquipoJugador1 = new javax.swing.JTextField();
         botonBuscar = new javax.swing.JButton();
         textPosicionJugador1 = new javax.swing.JTextField();
         botonEliminar = new javax.swing.JButton();
@@ -357,11 +353,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setText("Posicion");
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel12.setText("Equipo");
-
-        textEquipoJugador1.setEditable(false);
-
         botonBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         botonBuscar.setForeground(new java.awt.Color(0, 204, 0));
         botonBuscar.setText("Buscar por Id");
@@ -433,13 +424,9 @@ public class InterfazJugadores extends javax.swing.JFrame {
                                 .addGap(45, 45, 45)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel12))
+                                .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textEquipoJugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textNombreJugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textNombreJugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(72, 72, 72))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
@@ -470,8 +457,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
                             .addComponent(jLabel10)
                             .addComponent(textEdadJugador1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11)
-                            .addComponent(jLabel12)
-                            .addComponent(textEquipoJugador1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textPosicionJugador1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -509,23 +494,14 @@ public class InterfazJugadores extends javax.swing.JFrame {
             String nombre = getTextNombreJugador().getText();
             int edad = Integer.parseInt(getTextEdadJugador().getText());
             String pos = getComboPosicionJuagdor().getSelectedItem().toString();
-            if (getTextEquipoJugador().getText().contentEquals("")) {
-                Jugador j = new Jugador(id, nombre, edad, pos);
-                if (conexion.insertarJugador(j)) {
-                    JOptionPane.showMessageDialog(this, "Jugador insertado", "Insertado", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Ya existe jugador con este id o este nombre", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            Jugador j = new Jugador(id, nombre, edad, pos);
+            if (conexion.insertarJugador(e,j)) {
+                e.getJugadores().add(j);
+                JOptionPane.showMessageDialog(this, "Jugador insertado", "Insertado", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Equipo e = conexion.devolverEquipoPorNombre(getTextEquipoJugador().getText());
-                Jugador j = new Jugador(id, nombre, edad, pos, e);
-                if (conexion.insertarJugador(j)) {
-                    conexion.insertarJugadorEnEquipo(j, e);
-                    JOptionPane.showMessageDialog(this, "Jugador insertado", "Insertado", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Ya existe jugador con este id o este nombre", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                JOptionPane.showMessageDialog(this, "Ya existe jugador con este id o este nombre", "Error", JOptionPane.ERROR_MESSAGE);
             }
+
             actualizarTabla();
             actualizarTabla1();
             limpiarPanelInsertar();
@@ -534,11 +510,13 @@ public class InterfazJugadores extends javax.swing.JFrame {
 
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         if (comprobarEntero(getTextIdJugador1().getText())) {
-            Jugador j = conexion.devolverJugadorPorId(Integer.parseInt(getTextIdJugador1().getText()));
+            int id = Integer.parseInt(getTextIdJugador1().getText());
+            Jugador j = conexion.devolverJugadorPorId(e,id);
             if (j == null) {
                 JOptionPane.showMessageDialog(this, "No existe el jugador a borrar", "Error", JOptionPane.ERROR_MESSAGE);
-            }else{
+            } else {
                 if (conexion.eliminarJugador(j)) {
+                    e.getJugadores().remove(j);
                     JOptionPane.showMessageDialog(this, "Jugador eliminado", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "No existe el jugador a borrar", "Error", JOptionPane.ERROR_MESSAGE);
@@ -555,11 +533,12 @@ public class InterfazJugadores extends javax.swing.JFrame {
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         if (comprobarEntero(getTextIdJugador1().getText())) {
-            Jugador j = conexion.devolverJugadorPorId(Integer.parseInt(getTextIdJugador1().getText()));
+            int id = Integer.parseInt(getTextIdJugador1().getText());
+            Jugador j = conexion.devolverJugadorPorId(e,id);
             if (j == null) {
                 JOptionPane.showMessageDialog(this, "No existe el jugador a modificar", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                InterfazModificarJugador i = new InterfazModificarJugador(j, this);
+                InterfazModificarJugador i = new InterfazModificarJugador(e,j, this);
                 limpiarPanelModificar();
             }
         } else {
@@ -570,18 +549,13 @@ public class InterfazJugadores extends javax.swing.JFrame {
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         if (comprobarEntero(getTextIdJugador1().getText())) {
             int id = Integer.parseInt(getTextIdJugador1().getText());
-            Jugador j = conexion.devolverJugadorPorId(id);
+            Jugador j = conexion.devolverJugadorPorId(e, id);
             if (j == null) {
                 JOptionPane.showMessageDialog(this, "No exixte nadie con este id", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 getTextNombreJugador1().setText(j.getNombre());
                 getTextEdadJugador1().setText(String.valueOf(j.getEdad()));
                 getTextPosicionJugador1().setText(j.getPosicion());
-                if (j.getEquipo() == null) {
-                    getTextEquipoJugador1().setText("No tiene equipo");
-                } else {
-                    getTextEquipoJugador1().setText(j.getEquipo().getNombre());
-                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Escribe un id correcto", "Error", JOptionPane.ERROR_MESSAGE);
@@ -608,7 +582,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -625,7 +598,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
     private javax.swing.JTable tablaJugadores1;
     private javax.swing.JTextField textEdadJugador;
     private javax.swing.JTextField textEdadJugador1;
-    private javax.swing.JTextField textEquipoJugador1;
     private javax.swing.JTextField textIdJugador;
     private javax.swing.JTextField textIdJugador1;
     private javax.swing.JTextField textNombreJugador;
@@ -647,12 +619,7 @@ public class InterfazJugadores extends javax.swing.JFrame {
         return textEdadJugador;
     }
 
-    /**
-     * @return the textEquipoJugador
-     */
-    public javax.swing.JTextField getTextEquipoJugador() {
-        return textEquipoJugador;
-    }
+
 
     /**
      * @return the textIdJugador
@@ -682,12 +649,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
         return textEdadJugador1;
     }
 
-    /**
-     * @return the textEquipoJugador1
-     */
-    public javax.swing.JTextField getTextEquipoJugador1() {
-        return textEquipoJugador1;
-    }
 
     /**
      * @return the textIdJugador1

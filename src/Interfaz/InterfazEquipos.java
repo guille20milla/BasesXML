@@ -340,7 +340,7 @@ public class InterfazEquipos extends javax.swing.JFrame {
         botonGestion.setBackground(new java.awt.Color(0, 153, 0));
         botonGestion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         botonGestion.setForeground(new java.awt.Color(255, 255, 0));
-        botonGestion.setText("Fichar/Despedir jugadores");
+        botonGestion.setText("Gestion de jugadores");
         botonGestion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botonGestion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -550,7 +550,7 @@ public class InterfazEquipos extends javax.swing.JFrame {
             if (e == null) {
                 JOptionPane.showMessageDialog(this, "No existe el equipo a gestionar", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                InterfazGestion i = new InterfazGestion(e,conexion,this);
+                InterfazJugadores i = new InterfazJugadores(conexion,e);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Escribe un id correcto", "Error", JOptionPane.ERROR_MESSAGE);

@@ -8,7 +8,9 @@ package XML;
 import Objetos.Equipo;
 import Objetos.Jugador;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -66,6 +68,18 @@ public class XML {
         return true;
     }
 
+    public boolean insertarJugador(Equipo e, Jugador j) {
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            ResourceSet result = servicio.query("update insert " + j.toString() + " into /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
+            col.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public Equipo devolverEquipoPorId(int id) {
         try {
             XPathQueryService servicio;
@@ -87,11 +101,38 @@ public class XML {
         }
     }
 
+    public Jugador devolverJugadorPorId(Equipo e, int id) {
+        Jugador jugadorADevolver = null;
+        Set<Jugador> array = new TreeSet<Jugador>();
+        array = e.getJugadores();
+        Iterator<Jugador> jugadores = array.iterator();
+        while (jugadores.hasNext()) {
+            Jugador j = jugadores.next();
+            if (j.getId_jugador() == id) {
+                jugadorADevolver = j;
+            }
+        }
+        return jugadorADevolver;
+    }
+
     public boolean eliminarEquipo(Equipo e) {
         try {
             XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
             ResourceSet result = servicio.query(
                     "update delete /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
+            col.close();
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarJugador(Jugador j) {
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            ResourceSet result = servicio.query(
+                    "update delete /Equipos/Equipo/Jugador[Id_jugador=" + j.getId_jugador()+ "]");
             col.close();
             return true;
         } catch (Exception ex) {
@@ -118,6 +159,17 @@ public class XML {
             XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
             ResourceSet result = servicio.query(
                     "update replace /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "] with" + e.toString());
+
+            col.close();
+        } catch (Exception ex) {
+        }
+    }
+    
+    public void modificarJugador(Jugador j) {
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            ResourceSet result = servicio.query(
+                    "update replace /Equipos/Equipo/Jugador[Id_jugador=" + j.getId_jugador() + "] with" + j.toString());
 
             col.close();
         } catch (Exception ex) {
