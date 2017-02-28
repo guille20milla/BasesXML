@@ -58,26 +58,36 @@ public class XML {
 
     public boolean insertarEquipo(Equipo e) {
         try {
-            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            ResourceSet result = servicio.query("update insert " + e.toString() + " into /Equipos");
-            col.close();
+            if (comprobarIdEquipo(e.getId_equipo())) {
+                return false;
+            } else {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query("update insert " + e.toString() + " into /Equipos");
+                col.close();
+                return true;
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public boolean insertarJugador(Equipo e, Jugador j) {
         try {
-            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            ResourceSet result = servicio.query("update insert " + j.toString() + " into /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
-            col.close();
+            if (comprobarIdJugador(j.getId_jugador())) {
+                return false;
+            } else {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query("update insert " + j.toString() + " into /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
+                col.close();
+                return true;
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public Equipo devolverEquipoPorId(int id) {
@@ -117,11 +127,16 @@ public class XML {
 
     public boolean eliminarEquipo(Equipo e) {
         try {
-            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            ResourceSet result = servicio.query(
-                    "update delete /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
-            col.close();
-            return true;
+            if (comprobarIdEquipo(e.getId_equipo())) {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query(
+                        "update delete /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
+                col.close();
+                return true;
+            } else {
+                return false;
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -130,11 +145,16 @@ public class XML {
 
     public boolean eliminarJugador(Jugador j) {
         try {
-            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            ResourceSet result = servicio.query(
-                    "update delete /Equipos/Equipo/Jugador[Id_jugador=" + j.getId_jugador()+ "]");
-            col.close();
-            return true;
+            if (comprobarIdJugador(j.getId_jugador())) {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query(
+                        "update delete /Equipos/Equipo/Jugador[Id_jugador=" + j.getId_jugador() + "]");
+                col.close();
+                return true;
+            } else {
+                return false;
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -154,17 +174,23 @@ public class XML {
         return set;
     }
 
-    public void modificarEquipo(Equipo e) {
+    public boolean modificarEquipo(Equipo e) {
         try {
-            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            ResourceSet result = servicio.query(
-                    "update replace /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "] with" + e.toString());
+            if (comprobarIdEquipo(e.getId_equipo())) {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query(
+                        "update replace /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "] with" + e.toString());
 
-            col.close();
+                col.close();
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception ex) {
+            return false;
         }
     }
-    
+
     public void modificarJugador(Jugador j) {
         try {
             XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -203,5 +229,57 @@ public class XML {
             System.out.println("Error en la conexión. Comprueba datos.");
         }
         return array;
+    }
+
+    public boolean comprobarIdEquipo(int id) {
+        //Devuelve true si el dep existe
+        if (conectar() != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query(
+                        "/Equipos/Equipo[Id_equipo=" + id + "]");
+                ResourceIterator i;
+                i = result.getIterator();
+                col.close();
+                if (!i.hasMoreResources()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+
+        return false;
+    }
+
+    public boolean comprobarIdJugador(int id) {
+        //Devuelve true si el dep existe
+        if (conectar() != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                ResourceSet result = servicio.query(
+                        "/Equipos/Equipo/Jugador[Id_jugador=" + id + "]");
+                ResourceIterator i;
+                i = result.getIterator();
+                col.close();
+                if (!i.hasMoreResources()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+
+        return false;
     }
 }
