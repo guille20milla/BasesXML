@@ -79,7 +79,7 @@ public class XML {
                 return false;
             } else {
                 XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                ResourceSet result = servicio.query("update insert " + j.toString() + " into /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]");
+                ResourceSet result = servicio.query("update insert " + j.toString() + " into /Equipos/Equipo[Id_equipo=" + e.getId_equipo() + "]/Jugadores");
                 col.close();
                 return true;
             }
@@ -148,7 +148,7 @@ public class XML {
             if (comprobarIdJugador(j.getId_jugador())) {
                 XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
                 ResourceSet result = servicio.query(
-                        "update delete /Equipos/Equipo/Jugador[Id_jugador=" + j.getId_jugador() + "]");
+                        "update delete /Equipos/Equipo/Jugadores/Jugador[Id_jugador=" + j.getId_jugador() + "]");
                 col.close();
                 return true;
             } else {
@@ -195,7 +195,7 @@ public class XML {
         try {
             XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
             ResourceSet result = servicio.query(
-                    "update replace /Equipos/Equipo/Jugador[Id_jugador=" + j.getId_jugador() + "] with" + j.toString());
+                    "update replace /Equipos/Equipo/Jugadores/Jugador[Id_jugador=" + j.getId_jugador() + "] with" + j.toString());
 
             col.close();
         } catch (Exception ex) {
@@ -213,7 +213,6 @@ public class XML {
                 ResourceIterator i;
                 i = result.getIterator();
                 if (!i.hasMoreResources()) {
-                    System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
                 }
                 while (i.hasMoreResources()) {
                     Resource r = i.nextResource();
@@ -263,7 +262,7 @@ public class XML {
             try {
                 XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
                 ResourceSet result = servicio.query(
-                        "/Equipos/Equipo/Jugador[Id_jugador=" + id + "]");
+                        "/Equipos/Equipo/Jugadores/Jugador[Id_jugador=" + id + "]");
                 ResourceIterator i;
                 i = result.getIterator();
                 col.close();

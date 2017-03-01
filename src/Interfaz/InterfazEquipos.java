@@ -550,7 +550,7 @@ public class InterfazEquipos extends javax.swing.JFrame {
             if (e == null) {
                 JOptionPane.showMessageDialog(this, "No existe el equipo a gestionar", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                InterfazJugadores i = new InterfazJugadores(conexion,e);
+                InterfazJugadores i = new InterfazJugadores(conexion,e,this);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Escribe un id correcto", "Error", JOptionPane.ERROR_MESSAGE);

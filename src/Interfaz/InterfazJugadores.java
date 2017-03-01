@@ -27,17 +27,19 @@ public class InterfazJugadores extends javax.swing.JFrame {
 
     XML conexion;
     Equipo e;
+    InterfazEquipos ie;
 
     /**
      * Creates new form InterfazJugadores
      */
-    public InterfazJugadores(XML conexion, Equipo e) {
+    public InterfazJugadores(XML conexion, Equipo e, InterfazEquipos ie) {
         this.conexion = conexion;
         this.e = e;
+        this.ie = ie;
         initComponents();
         actualizarTabla();
         actualizarTabla1();
-        setTitle("Gestion del equipo: "+e.getNombre());
+        setTitle("Gestion del equipo: " + e.getNombre());
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -501,7 +503,7 @@ public class InterfazJugadores extends javax.swing.JFrame {
             int edad = Integer.parseInt(getTextEdadJugador().getText());
             String pos = getComboPosicionJuagdor().getSelectedItem().toString();
             Jugador j = new Jugador(id, nombre, edad, pos);
-            if (conexion.insertarJugador(e,j)) {
+            if (conexion.insertarJugador(e, j)) {
                 e.getJugadores().add(j);
                 JOptionPane.showMessageDialog(this, "Jugador insertado", "Insertado", JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -510,6 +512,8 @@ public class InterfazJugadores extends javax.swing.JFrame {
 
             actualizarTabla();
             actualizarTabla1();
+            ie.actualizarTabla();
+            ie.actualizarTabla1();
             limpiarPanelInsertar();
         }
     }//GEN-LAST:event_botonInsertarActionPerformed
@@ -517,7 +521,7 @@ public class InterfazJugadores extends javax.swing.JFrame {
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         if (comprobarEntero(getTextIdJugador1().getText())) {
             int id = Integer.parseInt(getTextIdJugador1().getText());
-            Jugador j = conexion.devolverJugadorPorId(e,id);
+            Jugador j = conexion.devolverJugadorPorId(e, id);
             if (j == null) {
                 JOptionPane.showMessageDialog(this, "No existe el jugador a borrar", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -529,6 +533,8 @@ public class InterfazJugadores extends javax.swing.JFrame {
                 }
                 actualizarTabla();
                 actualizarTabla1();
+                ie.actualizarTabla();
+                ie.actualizarTabla1();
                 limpiarPanelModificar();
             }
 
@@ -540,11 +546,11 @@ public class InterfazJugadores extends javax.swing.JFrame {
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         if (comprobarEntero(getTextIdJugador1().getText())) {
             int id = Integer.parseInt(getTextIdJugador1().getText());
-            Jugador j = conexion.devolverJugadorPorId(e,id);
+            Jugador j = conexion.devolverJugadorPorId(e, id);
             if (j == null) {
                 JOptionPane.showMessageDialog(this, "No existe el jugador a modificar", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                InterfazModificarJugador i = new InterfazModificarJugador(e,j, this);
+                InterfazModificarJugador i = new InterfazModificarJugador(e, j, this,ie);
                 limpiarPanelModificar();
             }
         } else {
@@ -625,8 +631,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
         return textEdadJugador;
     }
 
-
-
     /**
      * @return the textIdJugador
      */
@@ -654,7 +658,6 @@ public class InterfazJugadores extends javax.swing.JFrame {
     public javax.swing.JTextField getTextEdadJugador1() {
         return textEdadJugador1;
     }
-
 
     /**
      * @return the textIdJugador1

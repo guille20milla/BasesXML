@@ -20,14 +20,16 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
     Equipo e;
     Jugador j;
     InterfazJugadores i;
+    InterfazEquipos ie;
 
     /**
      * Creates new form InterfazModificarJugador
      */
-    public InterfazModificarJugador(Equipo e,Jugador j, InterfazJugadores i) {
-        this.e=e;
+    public InterfazModificarJugador(Equipo e, Jugador j, InterfazJugadores i, InterfazEquipos ie) {
+        this.e = e;
         this.i = i;
         this.j = j;
+        this.ie = ie;
         initComponents();
         getTextNombre().setText(i.getTextNombreJugador1().getText());
         getTextEdad().setText(i.getTextEdadJugador1().getText());
@@ -174,16 +176,18 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
             if (comprobarEntero(getTextEdad().getText())) {
                 Jugador aux;
                 int id = j.getId_jugador();
-                String nombre=getTextNombre().getText();
+                String nombre = getTextNombre().getText();
                 int edad = Integer.parseInt(getTextEdad().getText());
                 String posicion = getComboPosicion().getSelectedItem().toString();
-                aux=new Jugador(id, nombre, edad, posicion);
+                aux = new Jugador(id, nombre, edad, posicion);
                 i.conexion.modificarJugador(aux);
                 e.getJugadores().remove(j);
                 e.getJugadores().add(aux);
                 JOptionPane.showMessageDialog(this, "Jugador modificado", "Modificado", JOptionPane.INFORMATION_MESSAGE);
                 i.actualizarTabla();
                 i.actualizarTabla1();
+                ie.actualizarTabla();
+                ie.actualizarTabla1();
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Escribe una edad correcto", "Error", JOptionPane.ERROR_MESSAGE);
@@ -224,7 +228,6 @@ public class InterfazModificarJugador extends javax.swing.JFrame {
     public javax.swing.JTextField getTextEdad() {
         return textEdad;
     }
-
 
     /**
      * @return the textNombre

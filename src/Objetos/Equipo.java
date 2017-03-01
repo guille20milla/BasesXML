@@ -141,7 +141,7 @@ public class Equipo {
 				+ "<Id_equipo>" + getId_equipo() + "</Id_equipo>"
 				+ "<Nombre_equipo>" + getNombre() + "</Nombre_equipo>"
                                 + "<Año_fundacion>" + getFundacion() + "</Año_fundacion>"
-				+ jugadores
+				+ "<Jugadores>"+jugadores+"</Jugadores>"
 				+ "</Equipo>";
 	}
 }
